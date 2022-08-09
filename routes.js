@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-exports = (req, res) => {
+module.exports = (req, res) => {
     const url = req.url;
     const method = req.method;
   if (url === '/') {
