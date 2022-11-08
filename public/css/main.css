@@ -23,6 +23,14 @@ form {
   text-align: center;
 }
 
+.image {
+  max-height: 20rem;
+}
+
+.image img {
+  height: 100%;
+}
+
 .form-control {
   display: flex;
   flex-direction: column;
