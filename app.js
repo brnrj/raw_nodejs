@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const sequelize = require('./util/database');
+const Product = require('./models/product');
+const User = require('./models/user');
 
 const app = express();
 
@@ -22,7 +24,9 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-sequelize.sync().then(result => {
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+
+sequelize.sync({ force: true }).then(result => {
     app.listen(3000);
 })
 .catch(err => {
