@@ -20,13 +20,29 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+    User.findByPk(1).then(user => {
+        req.user = user;
+        next();
+    }).catch(err => console.log(err));
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 
-sequelize.sync({ force: true }).then(result => {
+sequelize.sync().then(result => {
+    return User.findByPk(1);
+})
+.then(user => {
+    if (!user) {
+        return User.create({ name: 'Clooney', email: 'teste@teste.com' });
+    }
+    return user;
+})
+.then(user => {
     app.listen(3000);
 })
 .catch(err => {
